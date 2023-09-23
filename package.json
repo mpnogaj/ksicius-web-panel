@@ -5,18 +5,25 @@
 	"main": "",
 	"scripts": {
 		"clean": "rm -rf dist/",
-		"build:dev": "tsc --watch --preserveWatchOutput",
-		"start:dev": "nodemon dist/server/index.js & webpack -w",
-		"run:dev": "concurrently \"npm:build:dev\" \"npm:start:dev\""
+		"build": "tsc",
+		"run": "node ./dist/server/index.js",
+		"build:watch": "tsc --watch --preserveWatchOutput",
+		"start:watch": "webpack -w & nodemon dist/server/index.js",
+		"run:watch": "concurrently \"npm:build:watch\" \"npm:start:watch\""
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@types/express-session": "^1.17.7",
+		"@types/passport-discord": "^0.1.8",
 		"@types/react-router-dom": "^5.3.3",
 		"axios": "^1.5.0",
 		"dotenv": "^16.3.1",
 		"express": "^4.18.2",
+		"express-session": "^1.17.3",
+		"passport": "^0.6.0",
+		"passport-discord": "^0.1.4",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-router-dom": "^6.16.0"

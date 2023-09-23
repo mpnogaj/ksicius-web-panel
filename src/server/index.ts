@@ -1,17 +1,35 @@
-import express, { Request, Response, NextFunction, Express } from 'express';
-import * as path from 'path';
+import express, { Express, NextFunction, Request, Response } from 'express';
+import session from 'express-session';
 import * as fs from 'fs';
-import { PORT } from './config';
+import * as path from 'path';
+
+import { COOKIE_SECRET, PORT } from './config';
+import { configurePassport } from './utility/auth';
 
 const app = express();
 const publicDir = path.join(__dirname, '../../public');
 const routePath = path.join(__dirname, 'routes');
 
 app.use(express.static(publicDir));
+app.use(
+	session({
+		name: 'session',
+		resave: false,
+		saveUninitialized: true,
+		secret: COOKIE_SECRET,
+		cookie: {
+			httpOnly: true,
+			secure: false,
+			maxAge: 1000 * 60 * 60 * 24 * 30
+		}
+	})
+);
+
+configurePassport(app);
 
 app.get('/', (req: Request, res: Response, next: NextFunction): void => {
 	try {
-		res.sendFile('index.html');
+		res.sendFile(path.join(publicDir, 'app.html'));
 	} catch (error) {
 		next(error);
 	}

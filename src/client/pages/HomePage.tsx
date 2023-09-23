@@ -12,6 +12,7 @@ class HomePage extends React.Component {
 	}
 
 	render(): React.ReactNode {
+		console.log('Home page render');
 		return (
 			<div>
 				<button
