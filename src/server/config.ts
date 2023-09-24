@@ -7,3 +7,5 @@ export const CLIENT_SECRET = process.env.CLIENT_SECRET || '';
 export const CALLBACK_URL = process.env.CALLBACK_URL || '';
 
 export const DSICORD_AUTH_SCOPES = ['identify', 'guilds'];
+
+export const KSI_GUILD_ID = process.env.KSI_GUILD_ID || '';
