@@ -1,10 +1,10 @@
 export type DiscordUser = {
 	id: string;
 	username: string;
-	guilds: DiscordGuild[];
+	guilds: DiscordGuildPartial[];
 };
 
-export type DiscordGuild = {
+export type DiscordGuildPartial = {
 	id: string;
 	name: string;
 };

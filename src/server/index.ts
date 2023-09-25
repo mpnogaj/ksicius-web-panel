@@ -19,7 +19,8 @@ const loadRoutes = async (routesPath: string, app: Express) => {
 			await loadRoutes(filepath, app);
 		} else if (file.ext === '.js') {
 			try {
-				const baseRoute = `/api/${path.relative(routeDir, file.dir)}`;
+				const relativePath = path.relative(routeDir, file.dir);
+				const baseRoute = relativePath !== '' ? `/api/${relativePath}` : '/api';
 				const router = (await import(filepath)).default;
 				console.log(`Mapping router from module: ${file.name} with base route: ${baseRoute}`);
 				app.use(baseRoute, router);

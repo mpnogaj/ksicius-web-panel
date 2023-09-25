@@ -4,7 +4,8 @@ enum Endpoints {
 	AUTH_IS_KSI_MEMBER = '/api/auth/isKsiMember',
 	AUTH_LOGOUT = '/api/auth/logout',
 	AUTH_LOGIN = '/api/auth/login',
-	PING_PING = '/api/ping/ping'
+	DISCORD_IS_SERVER_ADMIN = '/api/discord/isServerAdmin',
+	PING_PING = '/api/ping'
 }
 
 export default Endpoints;

@@ -2,7 +2,9 @@ import { Express, NextFunction, Request, Response } from 'express';
 import passport from 'passport';
 import { Strategy as DiscordStrategy } from 'passport-discord';
 
+import { DiscordUser } from '../../common/types/discordTypes';
 import { CALLBACK_URL, CLIENT_ID, CLIENT_SECRET, DSICORD_AUTH_SCOPES } from '../config';
+import { DiscordOAuthUser } from '../types/discordTypes';
 
 export const configurePassport = (app: Express) => {
 	passport.serializeUser((user, done) => {
@@ -20,8 +22,12 @@ export const configurePassport = (app: Express) => {
 				callbackURL: CALLBACK_URL,
 				scope: DSICORD_AUTH_SCOPES
 			},
-			function (_accessToken, _refreshToken, profile, done) {
-				return done(null, profile);
+			function (accessToken, _refreshToken, profile, done) {
+				const user: DiscordOAuthUser = {
+					profile: profile as DiscordUser,
+					accessToken: accessToken
+				};
+				return done(null, user);
 			}
 		)
 	);
