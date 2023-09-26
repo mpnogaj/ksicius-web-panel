@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React from 'react';
 
+import HttpCodes from '../../../common/httpCodes';
 import { DiscordUser } from '../../../common/types/discordTypes';
-import { BooleanResponse } from '../../../common/types/responseTypes';
 import Endpoints from '../../endpoints';
 import { empty } from '../../types/others';
 
@@ -36,32 +36,30 @@ class HomePage extends React.Component<empty, ICompState> {
 		}
 	};
 
-	loadIsMember = async (): Promise<boolean | null> => {
+	loadIsMember = async (): Promise<boolean> => {
 		try {
-			const resp = await axios.get<BooleanResponse>(Endpoints.AUTH_IS_KSI_MEMBER);
-			return resp.data.result;
+			const resp = await axios.get(Endpoints.AUTH_IS_GUILD_MEMBER);
+			return resp.status === HttpCodes.OK;
 		} catch (ex) {
-			console.error(ex);
-			return null;
+			return false;
 		}
 	};
 
 	loadIsAdmin = async (): Promise<boolean> => {
 		try {
-			const resp = await axios.get<BooleanResponse>(Endpoints.DISCORD_IS_SERVER_ADMIN);
-			return resp.data.result;
+			const resp = await axios.get(Endpoints.AUTH_IS_GUILD_ADMIN);
+			return resp.status === HttpCodes.OK;
 		} catch (ex) {
-			console.error(ex);
 			return false;
 		}
 	};
 
 	loadUserData = async () => {
 		const username = await this.loadUsername();
-		const isMember = await this.loadIsMember();
-		if (username === null || isMember === null) {
+		if (username === null) {
 			this.setState({ isLoading: false, error: true });
 		} else {
+			const isMember = await this.loadIsMember();
 			const isAdmin = await this.loadIsAdmin();
 			this.setState({
 				isLoading: false,
@@ -73,8 +71,8 @@ class HomePage extends React.Component<empty, ICompState> {
 		}
 	};
 
-	async componentDidMount() {
-		this.loadUserData();
+	componentDidMount() {
+		this.loadUserData().catch(x => console.error(x));
 	}
 
 	render(): React.ReactNode {

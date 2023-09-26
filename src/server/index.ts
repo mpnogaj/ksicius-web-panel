@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { COOKIE_SECRET, PORT } from './config';
-import { configurePassport } from './utility/auth';
+import { configurePassport } from './modules/passport';
 
 const publicDir = path.join(__dirname, '../../public');
 const routeDir = path.join(__dirname, 'routes');

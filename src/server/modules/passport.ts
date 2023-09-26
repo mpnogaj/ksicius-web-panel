@@ -1,4 +1,4 @@
-import { Express, NextFunction, Request, Response } from 'express';
+import { Express } from 'express';
 import passport from 'passport';
 import { Strategy as DiscordStrategy } from 'passport-discord';
 
@@ -34,9 +34,4 @@ export const configurePassport = (app: Express) => {
 
 	app.use(passport.initialize());
 	app.use(passport.session());
-};
-
-export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
-	if (req.isAuthenticated()) return next();
-	res.sendStatus(403);
 };

@@ -20,11 +20,18 @@ const makeBotGetRequest = async <T>(apiPath: string): Promise<T | undefined> => 
 };
 
 export const getKsiGuild = async () => {
-	return makeBotGetRequest<DiscordGuild>(`/guilds/${KSI_GUILD_ID}`);
+	const guild = makeBotGetRequest<DiscordGuild>(`/guilds/${KSI_GUILD_ID}`);
+	if (guild === undefined) console.error('Could not fetch KSI guild.');
+	return guild;
 };
 
 export const getKsiGuildMember = async (userId: string) => {
-	return makeBotGetRequest<DiscordGuildMember>(`/guilds/${KSI_GUILD_ID}/members/${userId}`);
+	const guildMember = makeBotGetRequest<DiscordGuildMember>(
+		`/guilds/${KSI_GUILD_ID}/members/${userId}`
+	);
+	if (guildMember === undefined)
+		console.error(`Could not fetch guild member with given user id: ${userId}.`);
+	return guildMember;
 };
 
 export const EVERYONE_ROLE_NAME = '@everyone';

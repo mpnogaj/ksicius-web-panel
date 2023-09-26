@@ -1,11 +1,10 @@
 import { Router } from 'express';
 import passport from 'passport';
 
-import { DiscordUser } from '../../../common/types/discordTypes';
-import { BooleanResponse } from '../../../common/types/responseTypes';
-import { DSICORD_AUTH_SCOPES, KSI_GUILD_ID } from '../../config';
+import HttpCodes from '../../../common/httpCodes';
+import { DSICORD_AUTH_SCOPES } from '../../config';
+import { checkAuth, checkGuildAdmin, checkGuildMember } from '../../middleware/authMiddleware';
 import { DiscordOAuthUser } from '../../types/discordTypes';
-import { checkAuth } from '../../utility/auth';
 
 const router = Router();
 
@@ -23,7 +22,7 @@ router.get('/logout', function (req, res) {
 });
 
 router.get('/isAuth', checkAuth, (req, res) => {
-	res.sendStatus(200);
+	res.sendStatus(HttpCodes.OK);
 });
 
 router.get('/getUser', checkAuth, (req, res) => {
@@ -31,15 +30,12 @@ router.get('/getUser', checkAuth, (req, res) => {
 	res.send(oauthUser.profile);
 });
 
-router.get('/isKsiMember', checkAuth, (req, res) => {
-	const oauthUser = req.user as DiscordOAuthUser;
-	const discordUser = oauthUser.profile as DiscordUser;
-	const guild = discordUser.guilds;
-	const isMember = guild.filter(x => x.id == KSI_GUILD_ID).length > 0;
-	const result: BooleanResponse = {
-		result: isMember
-	};
-	res.send(result);
+router.get('/isKsiGuildMember', checkGuildMember, (req, res) => {
+	res.sendStatus(HttpCodes.OK);
+});
+
+router.get('/isGuildAdmin', checkGuildAdmin, (_req, res) => {
+	res.sendStatus(HttpCodes.OK);
 });
 
 export = router;
