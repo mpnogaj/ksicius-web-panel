@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import HttpCodes from '../../common/httpCodes';
 import { DiscordUser } from '../../common/types/discordTypes';
-import { KSI_GUILD_ID } from '../config';
+import { KSI_MEMBER_ROLE_IDS } from '../config';
 import {
 	ADMIN_PERMISSION,
 	EVERYONE_ROLE_NAME,
@@ -11,14 +11,17 @@ import {
 } from '../modules/discordApi';
 import { DiscordOAuthUser } from '../types/discordTypes';
 
-const isGuildMember = (discordUser: DiscordUser): boolean => {
-	const guilds = discordUser.guilds;
-	const guildIds = guilds.map(x => x.id);
-	return guildIds.includes(KSI_GUILD_ID);
+const isGuildMember = async (discordUser: DiscordUser): Promise<boolean> => {
+	const guildMember = await getKsiGuildMember(discordUser.id);
+	if (guildMember === undefined) return false;
+	for (const validRole in KSI_MEMBER_ROLE_IDS) {
+		if (guildMember.roles.includes(validRole)) return true;
+	}
+	return false;
 };
 
 const isGuildAdmin = async (discordUser: DiscordUser): Promise<boolean> => {
-	if (!isGuildMember(discordUser)) return false;
+	if (!(await isGuildMember(discordUser))) return false;
 
 	const guild = await getKsiGuild();
 	if (guild === undefined) return false;
@@ -54,11 +57,12 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
 	return next();
 };
 
-export const checkGuildMember = (req: Request, res: Response, next: NextFunction) => {
+export const checkGuildMember = async (req: Request, res: Response, next: NextFunction) => {
 	if (!req.isAuthenticated()) return res.sendStatus(HttpCodes.FORBIDDEN);
 	const discordUser = tryGetDiscordUser(req);
 	if (discordUser === undefined) return res.sendStatus(HttpCodes.FORBIDDEN);
-	if (!isGuildMember(discordUser)) return res.sendStatus(HttpCodes.FORBIDDEN);
+	const guildMember = await isGuildMember(discordUser);
+	if (!guildMember) return res.sendStatus(HttpCodes.FORBIDDEN);
 	return next();
 };
 

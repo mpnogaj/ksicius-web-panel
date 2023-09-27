@@ -11,3 +11,8 @@ export const BOT_TOKEN = process.env.BOT_TOKEN || '';
 export const DISCORD_API_BASE = 'https://discord.com/api/v10';
 
 export const DSICORD_AUTH_SCOPES = ['identify', 'guilds'];
+
+export const ACTIVE_MEMBER_ROLE_ID = process.env.ACTIVE_MEMBER_ROLE_ID || '';
+export const HONOURED_MEMBER_ROLE_ID = process.env.HONOURED_MEMBER_ROLE_ID || '';
+
+export const KSI_MEMBER_ROLE_IDS = [ACTIVE_MEMBER_ROLE_ID, HONOURED_MEMBER_ROLE_ID];
