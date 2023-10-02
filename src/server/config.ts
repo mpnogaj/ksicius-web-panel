@@ -11,3 +11,5 @@ export const BOT_TOKEN = process.env.BOT_TOKEN || '';
 export const DISCORD_API_BASE = 'https://discord.com/api/v10';
 
 export const DSICORD_AUTH_SCOPES = ['identify', 'guilds'];
+
+export const MONGO_LINK = process.env.MONGO_LINK || '';

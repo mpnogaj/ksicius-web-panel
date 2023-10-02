@@ -1,9 +1,10 @@
 import express, { Express, NextFunction, Request, Response } from 'express';
 import session from 'express-session';
 import * as fs from 'fs';
+import mongoose from 'mongoose';
 import * as path from 'path';
 
-import { COOKIE_SECRET, PORT } from './config';
+import { COOKIE_SECRET, MONGO_LINK, PORT } from './config';
 import { configurePassport } from './modules/passport';
 
 const publicDir = path.join(__dirname, '../../public');
@@ -33,6 +34,8 @@ const loadRoutes = async (routesPath: string, app: Express) => {
 };
 
 const setupExpressApp = async (app: Express) => {
+	await mongoose.connect(MONGO_LINK);
+
 	app.use(express.static(publicDir));
 	app.use(
 		session({
