@@ -1,7 +1,7 @@
 {
-	"eslint.validate": ["javascript", "typescript"],
+	"eslint.validate": ["javascript", "typescript", "javascriptreact", "typescriptreact"],
 	"editor.codeActionsOnSave": {
-	"source.fixAll.eslint": true
+		"source.fixAll.eslint": "always"
 	},
 	"editor.tabSize": 2,
 	"editor.insertSpaces": false,

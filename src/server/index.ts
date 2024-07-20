@@ -3,7 +3,7 @@ import session from 'express-session';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { COOKIE_SECRET, PORT } from './config';
+import { PORT, SESSION_SECRET } from './config';
 import { configurePassport } from './modules/passport';
 
 const publicDir = path.join(__dirname, '../../public');
@@ -39,7 +39,7 @@ const setupExpressApp = async (app: Express) => {
 			name: 'session',
 			resave: false,
 			saveUninitialized: true,
-			secret: COOKIE_SECRET,
+			secret: SESSION_SECRET,
 			cookie: {
 				httpOnly: true,
 				secure: false,
