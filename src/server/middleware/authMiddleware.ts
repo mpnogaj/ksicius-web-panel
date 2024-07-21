@@ -14,10 +14,7 @@ import { DiscordOAuthUser } from '../types/discordTypes';
 const isGuildMember = async (discordUser: DiscordUser): Promise<boolean> => {
 	const guildMember = await getKsiGuildMember(discordUser.id);
 	if (guildMember === undefined) return false;
-	for (const validRole in KSI_MEMBER_ROLE_IDS) {
-		if (guildMember.roles.includes(validRole)) return true;
-	}
-	return false;
+	return KSI_MEMBER_ROLE_IDS.some(validRoleId => guildMember.roles.includes(validRoleId));
 };
 
 const isGuildAdmin = async (discordUser: DiscordUser): Promise<boolean> => {
@@ -31,14 +28,13 @@ const isGuildAdmin = async (discordUser: DiscordUser): Promise<boolean> => {
 
 	const adminRoles = guild.roles.filter(x => (BigInt(x.permissions) & ADMIN_PERMISSION) > 0);
 
-	for (const adminRole of adminRoles) {
-		/* guildMember.roles for some reason doesn't include @everyone role id so we
-		 * need to check role name too */
-		if (adminRole.name === EVERYONE_ROLE_NAME || guildMember.roles.includes(adminRole.id)) {
-			return true;
-		}
-	}
-	return false;
+	return adminRoles.some(
+		/* we need to check if @everyone role has admin rights
+		 * (guildMember.roles doesn't include this role for obvious reasons)
+		 * very unlikely though
+		 */
+		role => role.name === EVERYONE_ROLE_NAME || guildMember.roles.includes(role.id)
+	);
 };
 
 const tryGetDiscordUser = (req: Request): DiscordUser | undefined => {
