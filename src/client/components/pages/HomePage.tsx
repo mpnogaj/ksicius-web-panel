@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React from 'react';
+import { Link, Outlet } from 'react-router-dom';
 
 import HttpCodes from '../../../common/httpCodes';
 import { DiscordUser } from '../../../common/types/discordTypes';
@@ -92,6 +93,12 @@ class HomePage extends React.Component<empty, ICompState> {
 				)}
 
 				<a href={Endpoints.AUTH_LOGOUT}>Logout</a>
+
+				<nav>
+					<Link to="settings">Settings</Link>
+				</nav>
+
+				<Outlet />
 			</div>
 		);
 	}

@@ -1,3 +1,4 @@
+import bodyParser from 'body-parser';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import session from 'express-session';
 import * as fs from 'fs';
@@ -34,6 +35,8 @@ const loadRoutes = async (routesPath: string, app: Express) => {
 
 const setupExpressApp = async (app: Express) => {
 	app.use(express.static(publicDir));
+	app.use(bodyParser.json());
+
 	app.use(
 		session({
 			name: 'session',
@@ -56,6 +59,7 @@ const setupExpressApp = async (app: Express) => {
 
 	app.get('*', (req: Request, res: Response, next: NextFunction): void => {
 		try {
+			console.log(req.path);
 			res.sendFile(path.join(publicDir, 'app.html'));
 		} catch (ex) {
 			console.error(ex);

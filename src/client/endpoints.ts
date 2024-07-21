@@ -5,7 +5,9 @@ enum Endpoints {
 	AUTH_LOGIN = '/api/auth/login',
 	AUTH_IS_GUILD_MEMBER = '/api/auth/isKsiGuildMember',
 	AUTH_IS_GUILD_ADMIN = '/api/auth/isGuildAdmin',
-	PING_PING = '/api/ping'
+	PING_PING = '/api/ping',
+	SETTINGS_FETCH = '/api/settings/fetch',
+	SETTINGS_UPDATE = '/api/settings/update'
 }
 
 export default Endpoints;
